@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000
 
 const app = express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/urlshortner2", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
