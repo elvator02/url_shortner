@@ -40,7 +40,7 @@ app.post('/register', async (req, res) => {
 
   try {
     // Check if username already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username }).maxTimeMS(20000);
     if (existingUser) {
         return res.render('register', { error: 'Username already exists' });
     }
