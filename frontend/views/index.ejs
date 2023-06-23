@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <style>
+    body {
+        padding: 40px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+ </style>
+  <script>
+    $(function() {
+      $('#searchInput').autocomplete({
+        source: function(request, response) {
+          $.ajax({
+            url: '/autocomplete',
+            dataType: 'json',
+            data: {
+              q: request.term
+            },
+            success: function(data) {
+              response(data.map(function(shortUrl) {
+                return {
+                  label: shortUrl.notes,
+                  value: shortUrl.notes
+                };
+              }).concat(data.map(function(shortUrl) {
+                return {
+                  label: shortUrl.full,
+                  value: shortUrl.full
+                };
+              })).concat(data.map(function(shortUrl) {
+                return {
+                  label: shortUrl.short,
+                  value: shortUrl.short
+                };
+              })));
+            }
+          });
+        },
+        minLength: 2 // Minimum characters required before triggering autocomplete
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>URL Shortener</h1>
+      <form action="/logout" method="POST">
+        <button type="submit" class="btn btn-primary">Logout</button>
+      </form>
+    </div>
+    <form action="/shortUrls" method="POST" class="my-4">
+      <div class="form-group">
+        <label for="fullUrl">Full URL:</label>
+        <input type="url" class="form-control" id="fullUrl" name="fullUrl" required>
+      </div>
+      <div class="form-group">
+        <label for="notes">Notes:</label>
+        <input type="text" class="form-control" id="notes" name="notes">
+      </div>
+      <button type="submit" class="btn btn-primary">Shorten URL</button>
+    </form>
+    <div class="my-4">
+      <form action="/urlshortner" method="GET">
+        <div class="form-group">
+          <label for="searchInput">Search:</label>
+          <input type="text" class="form-control" id="searchInput" name="q" value="<%= searchQuery %>" autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-success">Search</button>
+      </form>
+    </div>
+    <% if (searchResults.length > 0) { %>
+      <h2>Search Results:</h2>
+      <ul class="list-group">
+        <% searchResults.forEach(function(shortUrl) { %>
+          <li class="list-group-item">
+            <p><strong>Full URL:</strong> <%= shortUrl.full %></p>
+            <p><strong>Short URL:</strong> <a href="/<%= shortUrl.short %>" target="_blank">/<%= shortUrl.short %></a></p>
+            <p><strong>Notes:</strong> <%= shortUrl.notes %></p>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <h2>No Search Results</h2>
+    <% } %>
+  </div>
+</body>
+</html>
