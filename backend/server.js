@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../frontend/views'));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public')); // Serve static files
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -39,17 +39,16 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Check if username already exists
-    const existingUser = await User.findOne({ username }).maxTimeMS(20000);
+    
+    const existingUser = await User.findOne({ username }).maxTimeMS(20000);// Check if username already exists
     if (existingUser) {
         return res.render('register', { error: 'Username already exists' });
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    const hashedPassword = await bcrypt.hash(password, 10);// Using bcrypt to hash password
 
-    // Create the user
-    await User.create({ username, password: hashedPassword });
+    await User.create({ username, password: hashedPassword });// Create the user
 
     res.redirect('/login');
   } catch (error) {
@@ -62,16 +61,16 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Find the user by username
-    const user = await User.findOne({ username });
+   
+    const user = await User.findOne({ username }); // Find the user by username
 
     
     if (!user) {
       return res.render('login', { error: 'Invalid username' });
     }
 
-    // Compare the provided password with the hashed password
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    
+    const passwordMatch = await bcrypt.compare(password, user.password);// Comparing the provided password with the hashed password
 
     if (!passwordMatch) {
         return res.render('login', { error: 'Invalid password' });}
@@ -171,10 +170,8 @@ app.get('/:shortUrl', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  // Clear the access token cookie
-  res.clearCookie('access-token');
-
-  // Redirect the user to the login page
+  
+  res.clearCookie('access-token');// removing access token 
   res.redirect('/login');
 });
 
