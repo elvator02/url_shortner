@@ -17,6 +17,7 @@ The URL Shortener is a web application that allows users to shorten long URLs an
 
 
 ## Installation
+***If you don't have npm then install it and then move forward***
 
 ### Backend Installation
 
@@ -35,12 +36,11 @@ npm install
 ```
 
 ### Frontend Installation
-
-Clone the repository  
-
+Come to previous directory
 ```bash
-git clone https://github.com/elvator02/url_shortner.git
+cd ..
 ```
+
 Navigate to frontend directory
 ```bash
 cd frontend
