@@ -90,10 +90,10 @@
       <ul class="list-group">
         <% searchResults.forEach(function(shortUrl) { %>
           <li class="list-group-item">
-            <p><strong>Full URL:</strong> <%= shortUrl.full %></p>
-            <p><strong>Short URL:</strong> <a href="/<%= shortUrl.short %>" target="_blank">/<%= shortUrl.short %></a></p>
-            <p><strong>Notes:</strong> <%= shortUrl.notes %></p>
-            <p><strong>Clicks:</strong> <%= shortUrl.clicks %></p>
+            <p>Full URL: <%= shortUrl.full %></p>
+            <p>Short URL: <a href="/<%= shortUrl.short %>" target="_blank">/<%= shortUrl.short %></a></p>
+            <p>Notes: <%= shortUrl.notes %></p>
+            <p>Clicks: <%= shortUrl.clicks %></p>
           </li>
         <% }); %>
       </ul>
