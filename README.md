@@ -3,6 +3,10 @@
 
 The URL Shortener is a web application that allows users to shorten long URLs and keep track of their shortened URLs along with additional notes. This documentation provides an overview of the application's features, architecture, and implementation details.
 
+# Demo
+
+https://github.com/elvator02/url_shortner/assets/115696725/2ae02064-cba1-430e-a9e2-e51f421ee2c1
+
 
 ## Features
 
